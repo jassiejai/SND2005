@@ -9,8 +9,9 @@ var users= [
     {firstName : "John", lastName: "Mckay"},
 ];
 
+
 $(document).ready(function(){
-        getUsers();
+        getUsers()});
     $(`#addUser`).click(function(){
         addUser();
     });
@@ -24,7 +25,7 @@ class User{
         this.firstName = firstName;
         this.lastName = lastName;
 
-    }
+    };
 }
 
 function addUser() {
@@ -52,13 +53,18 @@ function getUsers(){
 
     //1. loop users
     $.each(users, function(i,user){
+
+        let options = `
+        <button class="btn btn-info" onclick="getUser(${i});">Get User</button>
+        <button class="btn btn-danger" onclick = "deleteUser(${1});">Delete User</button>
+        `
         //2. append the data to html
         $('#Users').append(
             `
             <tr>
+                <td>${options}</td>
                 <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td><button onclck="getUser(${i});">Get User</button></td>
+                <td>${user.lastName}</td>   
             </tr>
             `
         );
@@ -68,28 +74,38 @@ function getUsers(){
 }
 
 function getUser(userId){
-
-    let firstname = users[userid].firstName;
+    
+    let firstName = users[userid].firstName;
     let lastName = users[userid].lastName;
+
     
     $(`#firstName`).val(firstName);
     $(`#lastName`).val(lastName);
-    $(`#userId`).val(userId)
-
+    $(`#userId`).val(userId);
+    
 }
 
 function updateUser() {
+
+    users[userId].firstName = firstName;
+    users[userId].lastName = lastName;
     //1. get updated data from html form
 
     let firstName = $('#firstName').val();
-    let lastName = $('lastName').val();
+    let lastName = $('#lastName').val();
     let userId = $('#userId').val();
 
     //2.  pass updaed data to user object
 
-    users[userId].firstName = firstName;
-    users[userId].lastName = lastName;
+   
 
     //3. refresh user table
-    getUser();
+    getUsers();
 }
+
+function deleteUser(userId) {
+    //splice out the user object.
+    users.splice(userId, 1);
+
+    // refreh the user table
+    getUsers(); }
